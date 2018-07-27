@@ -1,0 +1,161 @@
+<!-- Created by Salif Mehmed -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Code encrypter</title>
+        <style>
+            /* Created by Salif Mehmed */
+
+body {
+    background-color:#dedede;
+}
+.b {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    background-color:green;
+    color:white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    outline:none;
+}
+#psw {
+    width:100%;
+    padding: 12px 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    outline:none;
+}
+textarea {
+    width: 100%;
+    height:200px;
+    padding: 12px 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    outline:none;
+}
+        </style>
+        <script>
+(function(exports) {
+  "use strict";
+
+  var XORCipher = {
+    encode: function(key, data) {
+      data = xor_encrypt(key, data);
+      return b64_encode(data);
+    },
+    decode: function(key, data) {
+      data = b64_decode(data);
+      return xor_decrypt(key, data);
+    }
+  };
+
+  var b64_table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+  function b64_encode(data) {
+    var o1, o2, o3, h1, h2, h3, h4, bits, r, i = 0, enc = "";
+    if (!data) { return data; }
+    do {
+      o1 = data[i++];
+      o2 = data[i++];
+      o3 = data[i++];
+      bits = o1 << 16 | o2 << 8 | o3;
+      h1 = bits >> 18 & 0x3f;
+      h2 = bits >> 12 & 0x3f;
+      h3 = bits >> 6 & 0x3f;
+      h4 = bits & 0x3f;
+      enc += b64_table.charAt(h1) + b64_table.charAt(h2) + b64_table.charAt(h3) + b64_table.charAt(h4);
+    } while (i < data.length);
+    r = data.length % 3;
+    return (r ? enc.slice(0, r - 3) : enc) + "===".slice(r || 3);
+  }
+
+  function b64_decode(data) {
+    var o1, o2, o3, h1, h2, h3, h4, bits, i = 0, result = [];
+    if (!data) { return data; }
+    data += "";
+    do {
+      h1 = b64_table.indexOf(data.charAt(i++));
+      h2 = b64_table.indexOf(data.charAt(i++));
+      h3 = b64_table.indexOf(data.charAt(i++));
+      h4 = b64_table.indexOf(data.charAt(i++));
+      bits = h1 << 18 | h2 << 12 | h3 << 6 | h4;
+      o1 = bits >> 16 & 0xff;
+      o2 = bits >> 8 & 0xff;
+      o3 = bits & 0xff;
+      result.push(o1);
+      if (h3 !== 64) {
+        result.push(o2);
+        if (h4 !== 64) {
+          result.push(o3);
+        }
+      }
+    } while (i < data.length);
+    return result;
+  }
+
+  function keyCharAt(key, i) {
+    return key.charCodeAt( Math.floor(i % key.length) );
+  }
+
+  function xor_encrypt(key, data) {
+    return map(data, function(c, i) {
+      return c.charCodeAt(0) ^ keyCharAt(key, i);
+    });
+  }
+
+  function xor_decrypt(key, data) {
+    return map(data, function(c, i) {
+      return String.fromCharCode( c ^ keyCharAt(key, i) );
+    }).join("");
+  }
+function map(list, callback) {
+    var output = [];
+    for (var index = 0; index < list.length; index++) {
+      output.push(callback(list[index], index));
+    }
+    return output;
+  }
+  exports.XORCipher = XORCipher;
+
+})(this);
+// Created by Salif Mehmed
+
+function $(v){
+return document.getElementById(v);
+}
+function interpret() {
+    var inp=$("inp").value;
+    var psw=$("psw").value
+    $("psw").value="";
+    $("got").value=f(inp, psw);
+    
+}
+function f(v, pd) {
+    var qq="qwertyuiop";
+    var qw=XORCipher.encode(pd, qq);
+    var qe=XORCipher.encode(pd, v);
+    return unescape("%3C%21DOCTYPE%20html%3E%3Chtml%3E%3Chead%3E%3Ctitle%3E%3C/title%3E%3Cstyle%20type%3D%27text/css%27%3E.q%20%7B%20%20%20%20width%3A95%25%3B%20%20%20%20margin%3Aauto%3B%7D.w%20%7B%20%20%20%20padding%3A%2010px%2010px%3B%20%20%20%20display%3A%20inline-block%3B%20%20%20%20border%3A%201px%20solid%20%23aaa%3B%20%20%20%20border-radius%3A%204px%3B%20%20%20%20box-sizing%3A%20border-box%3B%20%20%20%20width%3A100%25%3B%20%20%20%20margin%3Aauto%3B%20%20%20%20margin-top%3A10px%3B%7D.w%3Afocus%20%7B%20%20%20%20outline%3Anone%3B%7D.e%20%7B%20%20%20%20background-color%3A%23343a40%3B%20%20%20%20color%3Awhite%3B%7D.e%3Afocus%20%7B%20%20%20%20background-color%3A%2323272b%3B%7D%3C/style%3E%3Cscript%3E%28function%28exports%29%20%7B%20%20%27use%20strict%27%3B%20%20var%20XORCipher%20%3D%20%7B%20%20%20%20encode%3A%20function%28key%2C%20data%29%20%7B%20%20%20%20%20%20data%20%3D%20xor_encrypt%28key%2C%20data%29%3B%20%20%20%20%20%20return%20b64_encode%28data%29%3B%20%20%20%20%7D%2C%20%20%20%20decode%3A%20function%28key%2C%20data%29%20%7B%20%20%20%20%20%20data%20%3D%20b64_decode%28data%29%3B%20%20%20%20%20%20return%20xor_decrypt%28key%2C%20data%29%3B%20%20%20%20%7D%20%20%7D%3B%20%20var%20b64_table%20%3D%20%27ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/%3D%27%3B%20%20function%20b64_encode%28data%29%20%7B%20%20%20%20var%20o1%2C%20o2%2C%20o3%2C%20h1%2C%20h2%2C%20h3%2C%20h4%2C%20bits%2C%20r%2C%20i%20%3D%200%2C%20enc%20%3D%20%27%27%3B%20%20%20%20if%20%28%21data%29%20%7B%20return%20data%3B%20%7D%20%20%20%20do%20%7B%20%20%20%20%20%20o1%20%3D%20data%5Bi++%5D%3B%20%20%20%20%20%20o2%20%3D%20data%5Bi++%5D%3B%20%20%20%20%20%20o3%20%3D%20data%5Bi++%5D%3B%20%20%20%20%20%20bits%20%3D%20o1%20%3C%3C%2016%20%7C%20o2%20%3C%3C%208%20%7C%20o3%3B%20%20%20%20%20%20h1%20%3D%20bits%20%3E%3E%2018%20%26%200x3f%3B%20%20%20%20%20%20h2%20%3D%20bits%20%3E%3E%2012%20%26%200x3f%3B%20%20%20%20%20%20h3%20%3D%20bits%20%3E%3E%206%20%26%200x3f%3B%20%20%20%20%20%20h4%20%3D%20bits%20%26%200x3f%3B%20%20%20%20%20%20enc%20+%3D%20b64_table.charAt%28h1%29%20+%20b64_table.charAt%28h2%29%20+%20b64_table.charAt%28h3%29%20+%20b64_table.charAt%28h4%29%3B%20%20%20%20%7D%20while%20%28i%20%3C%20data.length%29%3B%20%20%20%20r%20%3D%20data.length%20%25%203%3B%20%20%20%20return%20%28r%20%3F%20enc.slice%280%2C%20r%20-%203%29%20%3A%20enc%29%20+%20%27%3D%3D%3D%27.slice%28r%20%7C%7C%203%29%3B%20%20%7D%20%20function%20b64_decode%28data%29%20%7B%20%20%20%20var%20o1%2C%20o2%2C%20o3%2C%20h1%2C%20h2%2C%20h3%2C%20h4%2C%20bits%2C%20i%20%3D%200%2C%20result%20%3D%20%5B%5D%3B%20%20%20%20if%20%28%21data%29%20%7B%20return%20data%3B%20%7D%20%20%20%20data%20+%3D%20%27%27%3B%20%20%20%20do%20%7B%20%20%20%20%20%20h1%20%3D%20b64_table.indexOf%28data.charAt%28i++%29%29%3B%20%20%20%20%20%20h2%20%3D%20b64_table.indexOf%28data.charAt%28i++%29%29%3B%20%20%20%20%20%20h3%20%3D%20b64_table.indexOf%28data.charAt%28i++%29%29%3B%20%20%20%20%20%20h4%20%3D%20b64_table.indexOf%28data.charAt%28i++%29%29%3B%20%20%20%20%20%20bits%20%3D%20h1%20%3C%3C%2018%20%7C%20h2%20%3C%3C%2012%20%7C%20h3%20%3C%3C%206%20%7C%20h4%3B%20%20%20%20%20%20o1%20%3D%20bits%20%3E%3E%2016%20%26%200xff%3B%20%20%20%20%20%20o2%20%3D%20bits%20%3E%3E%208%20%26%200xff%3B%20%20%20%20%20%20o3%20%3D%20bits%20%26%200xff%3B%20%20%20%20%20%20result.push%28o1%29%3B%20%20%20%20%20%20if%20%28h3%20%21%3D%3D%2064%29%20%7B%20%20%20%20%20%20%20%20result.push%28o2%29%3B%20%20%20%20%20%20%20%20if%20%28h4%20%21%3D%3D%2064%29%20%7B%20%20%20%20%20%20%20%20%20%20result.push%28o3%29%3B%20%20%20%20%20%20%20%20%7D%20%20%20%20%20%20%7D%20%20%20%20%7D%20while%20%28i%20%3C%20data.length%29%3B%20%20%20%20return%20result%3B%20%20%7D%20%20function%20keyCharAt%28key%2C%20i%29%20%7B%20%20%20%20return%20key.charCodeAt%28%20Math.floor%28i%20%25%20key.length%29%20%29%3B%20%20%7D%20%20function%20xor_encrypt%28key%2C%20data%29%20%7B%20%20%20%20return%20map%28data%2C%20function%28c%2C%20i%29%20%7B%20%20%20%20%20%20return%20c.charCodeAt%280%29%20%5E%20keyCharAt%28key%2C%20i%29%3B%20%20%20%20%7D%29%3B%20%20%7D%20%20function%20xor_decrypt%28key%2C%20data%29%20%7B%20%20%20%20return%20map%28data%2C%20function%28c%2C%20i%29%20%7B%20%20%20%20%20%20return%20String.fromCharCode%28%20c%20%5E%20keyCharAt%28key%2C%20i%29%20%29%3B%20%20%20%20%7D%29.join%28%27%27%29%3B%20%20%7Dfunction%20map%28list%2C%20callback%29%20%7B%20%20%20%20var%20output%20%3D%20%5B%5D%3B%20%20%20%20for%20%28var%20index%20%3D%200%3B%20index%20%3C%20list.length%3B%20index++%29%20%7B%20%20%20%20%20%20output.push%28callback%28list%5Bindex%5D%2C%20index%29%29%3B%20%20%20%20%7D%20%20%20%20return%20output%3B%20%20%7D%20%20exports.XORCipher%20%3D%20XORCipher%3B%7D%29%28this%29%3B%3C/script%3E%3Cscript%3Efunction%20f%28%29%20%7B%20%20%20%20var%20p%3Ddocument.querySelector%28%27%23p%27%29.value%3B%20%20%20%20XORCipher.encode%28p%2C%20%27")+qq+unescape("%27%29%3D%3D%27")+qw+unescape("%27%3Fnxt%28p%29%3Aalert%28%27Incorrect%20password%21%27%29%3B%7Dfunction%20nxt%28p%29%20%7B%20%20%20%20document.write%28XORCipher.decode%28p%2C%20%27")+qe+unescape("%27%29%29%3B%7D%3C/script%3E%3C/head%3E%3Cbody%3E%3Cdiv%20class%3D%27q%27%3E%3Ch2%20align%3D%27center%27%3EThis%20code%20is%20encrypted%3C/h2%3E%3Cspan%20class%3D%27r%27%20id%3D%27err%27%3E%3C/span%3E%3Cinput%20type%3D%27password%27%20placeholder%3D%27password...%27%20id%3D%27p%27%20class%3D%27w%27%20/%3E%3Cinput%20type%3D%27button%27%20value%3D%27continue%27%20class%3D%27w%20e%27%20onclick%3D%27f%28%29%27%20/%3E%3C/div%3E%3C/body%3E%3C/html%3E");
+}
+        </script>
+    </head>
+    <body>
+        <h2 align="center">Encrypt your code</h3>
+        <h4>your code:</h4>
+        <textarea id="inp"></textarea>
+        <h4>password:</h4>
+        <input type="password" id="psw" />
+        <input type="button" class="b" value="encrypt" onclick="interpret()">
+        <h4>encrypted code:</h4>
+        <textarea id="got"></textarea>
+    </body>
+</html>
